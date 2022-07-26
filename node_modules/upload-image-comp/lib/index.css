@@ -1,0 +1,9 @@
+.upload-images-box {
+  display: inline-block;
+}
+.upload-images-box .input {
+  display: none;
+}
+.disabled-upload-images-box {
+  cursor: not-allowed;
+}

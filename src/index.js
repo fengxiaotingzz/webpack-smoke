@@ -1,9 +1,8 @@
-import React from "react";
-import ReactDom from "react-dom";
-import largeNumber from "fxt-largenumber";
+import React from 'react';
+import ReactDom from 'react-dom';
 
 function Comp() {
-  return <div>{largeNumber("1", "400")}</div>;
+  return <div>11</div>;
 }
 
-ReactDom.render(<Comp />, document.getElementById("app"));
+ReactDom.render(<Comp />, document.getElementById('app'));

@@ -5,8 +5,8 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlInlineCssWebpackPlugin =
   require("html-inline-css-webpack-plugin").default;
-const glob = require("glob");
 const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
   mode: "development",
@@ -45,8 +45,17 @@ module.exports = {
         ],
       },
       {
-        test: /\.js$/,
-        use: "babel-loader",
+        test: /\.(js|jsx)$/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            include: [
+              path.resolve("./src/"),
+              path.resolve("./node_modules/upload-image-comp/lib"),
+            ],
+            presets: ["@babel/env", "@babel/preset-react"],
+          },
+        },
       },
       {
         test: /\.(jpg|png|jpeg|gif)$/,
@@ -70,6 +79,12 @@ module.exports = {
       template: "./src/index.html",
       filename: "index.html",
     }),
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+    }),
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify("development"),
+    }),
     new MiniCssExtractPlugin({ filename: "[name]_[contenthash:8].css" }),
     new CleanWebpackPlugin(),
     new HtmlInlineCssWebpackPlugin(),
@@ -83,4 +98,14 @@ module.exports = {
     },
   ],
   stats: "errors-only",
+  resolve: {
+    extensions: [".js", ".jsx", ".json"],
+    // 使用之后 fs不报错了
+    fallback: {
+      fs: false,
+    },
+    // alias: {
+    //   process: "process/browser",
+    // },
+  },
 };
